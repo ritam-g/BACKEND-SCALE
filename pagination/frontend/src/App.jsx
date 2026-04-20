@@ -52,9 +52,9 @@ function App() {
       {loading && <p>Loading...</p>}
 
       {/* 🔹 Display Images */}
-      <div>
+      <div style={{display:"flex" ,alignItems:"center",justifyContent:"center" ,flexWrap:"wrap"}}>
         {images.map((item) => (
-          <div key={item._id} style={{ marginBottom: "10px" }}>
+          <div key={item._id} style={{ marginBottom: "10px",flexShrink:"0" }}>
             {/* Change based on your schema */}
             <p>{item.name || "Image Item"}</p>
             <iframe src={item.imageKitUrl} frameborder="0"></iframe>

@@ -9,6 +9,11 @@ router.post('/upload', upload.single('file'), fileController.uploadFile);
 // Get all files
 router.get('/', fileController.getAllFiles);
 // Pagination
+/**LINK - 
+ * @description it will accespet the query parameters
+ * @method GET
+ * @constant it will be pagination part of the api
+ */
 router.get(`/images`,fileController.getProductsPagination)
 // Get file by ID
 router.get('/:id', fileController.getFileById);
@@ -21,10 +26,6 @@ router.delete('/:id', fileController.deleteFile);
 
 // Get statistics
 router.get('/stats/overview', fileController.getStatistics);
-/**LINK - 
- * @description it will accespet the query parameters
- * @method GET
- * @constant it will be pagination part of the api
- */
+
 
 module.exports = router;
