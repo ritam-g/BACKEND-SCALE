@@ -20,7 +20,7 @@ exports.uploadFile = async (req, res) => {
             file: req.file.buffer, // Buffer from multer memory storage
             fileName: req.file.originalname,
             folder: '/uploads',
-            
+
         });
 
         // Save file info to database
@@ -240,6 +240,55 @@ exports.getStatistics = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: 'Failed to fetch statistics',
+            error: error.message,
+        });
+    }
+};
+
+
+// Controller: Get paginated products (images)
+
+exports.getProductsPagination = async (req, res) => {
+    try {
+        // STEP 1: Get page & limit from query params
+        // Example: /api/products?page=2&limit=5
+        const page = Number(req.query.page) || 1;   // default page = 1
+        const limit = Number(req.query.limit) || 10; // default limit = 10 (better than 1)
+
+        // STEP 2: Calculate how many documents to skip
+        // Formula: (page - 1) * limit
+        // Page 1 → skip 0
+        // Page 2 → skip 10
+        const skip = (page - 1) * limit;
+
+        // STEP 3: Fetch only required documents from DB
+        // skip() → ignore first N documents
+        // limit() → return only limited number of documents
+        const images = await FileUpload.find()
+            .skip(skip)
+            .limit(limit);
+
+        // STEP 4: Count total documents in DB
+        const totalDocuments = await FileUpload.countDocuments();
+
+        // STEP 5: Calculate total pages correctly
+        const totalPages = Math.ceil(totalDocuments / limit);
+
+        // STEP 6: Send response
+        return res.status(200).json({
+            success: true,
+            currentPage: page,        // current page user requested
+            totalPages: totalPages,   // total available pages
+            totalDocuments: totalDocuments, // total data count
+            data: images              // paginated data
+        });
+
+    } catch (error) {
+        console.log(error);
+
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to fetch products',
             error: error.message,
         });
     }
