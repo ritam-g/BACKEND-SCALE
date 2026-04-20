@@ -2,11 +2,9 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try {
-        if (!process.env.MONGODB_URI) {
-            throw new Error('MONGODB_URI environment variable is not set in .env file');
-        }
+        
 
-        const conn = await mongoose.connect(process.env.MONGODB_URI, {
+        const conn = await mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost:27017/file-upload-db`, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });

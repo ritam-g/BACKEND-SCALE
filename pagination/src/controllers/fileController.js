@@ -20,12 +20,7 @@ exports.uploadFile = async (req, res) => {
             file: req.file.buffer, // Buffer from multer memory storage
             fileName: req.file.originalname,
             folder: '/uploads',
-            isPrivateFile: !isPublic, // Set privacy based on isPublic flag
-            tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-            customMetadata: {
-                uploadedBy: uploadedBy || 'anonymous',
-                description: description || '',
-            },
+            
         });
 
         // Save file info to database
